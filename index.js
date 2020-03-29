@@ -3,7 +3,6 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 const imageDir = './assets';
-const paginate = require('jw-paginate');
 
 const port = process.env.PORT || 8080;
 
