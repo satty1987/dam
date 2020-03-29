@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <style>
+      .img {   
+        object-fit: fill;
+    height: 250px;
+    width: 100%;
+    border: 2px solid #ccc;
+      }
+      </style> 
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row" id="gallery">
+        
+        
+    </div>
+</div>
+
+<script>
+
+
+$.getJSON("/images",
+    function (data, textStatus, jqXHR) {
+   
+        for (const i of data) {
+
+            var img  = `<div class="col-4 mb-3">
+                <a href="${i}"> <img src='${i}' class="img" title="${i}" /></a>
+        </div>`;
+            $("#gallery").append(img);
+        }
+
+       
+    }
+);
+</script>
+</body>
+</html>
