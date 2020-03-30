@@ -7,11 +7,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
-        .img {
+        .imgclass {
             object-fit: fill;
-            height: 250px;
-            width: 100%;
-            border: 2px solid #ccc;
+            height: 201px;
+            width: 448px;
         }
     </style>
 </head>
@@ -19,6 +18,24 @@
 <body>
 
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <form class="card p-5 mb-3">
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Filter</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="all">All</option>
+                            <option value="png">Png</option>
+                            <option value="jpg">Jpg</option>
+                            <option value="svg">Svg</option>
+
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+        </div>
         <div class="row" id="gallery">
 
 
@@ -26,7 +43,20 @@
     </div>
 
     <script>
-            const config = {
+
+        $('select').on('change', function () {
+            const value = this.value;
+            $(".image-items").each(function () {
+                const att = $(this).data("ext");
+                if (att === value || value === 'all') {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+
+            });
+        });
+        const config = {
             rootMargin: '0px 0px 50px 0px',
             threshold: 0
         };
@@ -52,9 +82,23 @@
 
                 for (const i of data) {
 
-                    var img = `<div class="col-4 mb-3">
-                <a href="${i}"> <img data-src='${i}' class="img" title="${i}" /></a>
-        </div>`;
+                    const classname = (i.extension === 'png' || i.extension === 'svg') ? 'bg-primary' : '';
+
+                    var img = `
+                    <div class="col-4 mb-3 image-items" data-ext="${i.extension}">
+                        <div class="card mb-3 ">
+                            <img data-src='${i.path}' class="card-img-top  ${classname}     imgclass
+                                " alt="${i.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${i.name}</h5>
+                                <p class="card-text"><small class="text-muted">
+                                    <a href="${i.path}" target="_blank"> Get Link</a>
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        </div>
+                    `;
                     $("#gallery").append(img);
                 }
 
@@ -66,12 +110,12 @@
 
             }
         );
-    
-function preloadImage(img) {
-  const src = img.getAttribute('data-src');
-  if (!src) { return; }
-  img.src = src;
-}
+
+        function preloadImage(img) {
+            const src = img.getAttribute('data-src');
+            if (!src) { return; }
+            img.src = src;
+        }
 
 
     </script>
